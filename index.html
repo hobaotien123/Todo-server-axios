@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<input type="text" id="searchBox" placeholder="Search..." />
+	<button id="addBtn" > Search</button>
+	<ul id="list">
+		
+	</ul>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+
+		// var storageKey = 'todoList';
+		var input1 = document.getElementById("searchBox");
+		var listName = document.getElementById("list");
+		
+		var addBtn = document.getElementById("addBtn");
+		addBtn.addEventListener('click',clickbtn1);
+
+		// var dataString = localStorage.getItem(storageKey);
+		// var arrList;
+		// if (dataString){
+		// 	arrList = JSON.parse(dataString);
+		// }else{
+		// 	arrList = [];
+		// }
+
+		var url = 'http://localhost:9000/todo';
+		axios.get(url).then(function(res){
+			var items = res.data;
+			// console.log(items);
+			render(items);
+		})
+
+		
+
+		function clickbtn1(){
+			var testContent = {
+				content : input1.value
+			};
+			axios.post('http://localhost:9000/todo',testContent)
+			.then(function(data){
+				console.log(data);
+			});
+			if(testContent === ''){
+				return false;
+			}
+
+			
+			// arrList.push(name);
+			// render();
+			// input1.value = '';
+			// localStorage.setItem(storageKey, JSON.stringify(arrList));
+		}
+
+		function render(items){
+			var newList = items.map(function(item) {
+			return "<li>" + item.content + "</li>" ;
+			});
+			listName.innerHTML = newList.join('');
+		}		
+		// render();
+
+
+
+
+
+		// function clickbtn(){
+  
+ 	//  		input1.value = '';
+		// }
+		// clickbtn();
+		// var p = document.getElementById('p');
+		// var arr = [];
+		// var date = new Date();
+		// arr.push(date);
+		// var hii = arr.toString();
+		// p.innerHTML = hii;
+		// console.log(typeof hii);
+	</script>
+</body>
+</html>
